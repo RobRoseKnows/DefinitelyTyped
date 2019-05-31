@@ -16,13 +16,13 @@ declare module wtf {
 
     export function fetch(title: string | string[], lang: string, options: object, cb: any): Promise<Document>;
 
-    export function random(lang: string, options: object, cb: any): any;
+    export function random(lang: string, options: object, cb: any): Promise<Document>;
 
     class Document {
 
-        data: object;
+        private data: object;
 
-        options: object;
+        private options: object;
 
         title(str: string | undefined): string;
 
@@ -44,12 +44,12 @@ declare module wtf {
         // Alias of isDisambiguation
         isDisambig(): boolean;
 
-        categories(clue: number): Category;
+        categories(clue: number): string;
 
         // Singular
-        category(clue: number): Category;
+        category(clue: number): string;
 
-        categories(): Category[];
+        categories(): string[];
 
         sections(clue: number | string): Section;
 
@@ -100,9 +100,9 @@ declare module wtf {
         // Singular
         table(clue: number): Table;
 
-        templates(clue: string | undefined | null): Template[];
+        templates(clue: string | undefined | null): object[];
 
-        templates(clue: number): Template;
+        templates(clue: number): object;
 
         references(clue: string | undefined | null): Reference[];
 
@@ -120,12 +120,12 @@ declare module wtf {
         // Alias and singular
         citation(clue: number): Reference;
 
-        coordinates(clue: string | undefined | null): Coordinate[];
+        coordinates(clue: string | undefined | null): object[];
 
-        coordinates(clue: number): Coordinate;
+        coordinates(clue: number): object;
 
         // Singular
-        coordinates(clue: number): Coordinate;
+        coordinate(clue: number): object;
 
         infoboxes(clue: number): Infobox;
 
@@ -149,10 +149,10 @@ declare module wtf {
 
     class Section {
 
-        depth: number;
-        doc: Document;
-        _title: string;
-        data: object;
+        private depth: number;
+        private doc: Document;
+        private _title: string;
+        private data: object;
 
         title(): string;
 
@@ -178,61 +178,326 @@ declare module wtf {
 
         tables(): Table[];
 
-        templates(clue: number): Template;
+        templates(clue: number): object;
 
-        templates(clue: string | undefined | null): Template[]
+        templates(clue: string | undefined | null): object[]
 
         infoboxes(clue: number): Infobox;
 
         infoboxes(): Infobox[];
 
-        coordinates(clue: number): Coordinate;
+        coordinates(clue: number): object;
 
-        coordinates(): Coordinate[];
+        coordinates(): object[];
 
         lists(clue: number): List;
 
         lists(): List[];
 
-    }
+        interwiki(num: number): object;
 
-    class Category {
+        interwiki(): object[];
 
-    }
+        images(clue: number): Image;
 
-    class Coordinate {
+        images(): Image[];
+
+        references(clue: number): Reference;
+
+        references(): Reference[];
+
+        // Alias of references()
+        citations(clue: number): Reference;
+
+        // Alias of references()
+        citations(): Reference[];
+
+        remove(): Document;
+
+        nextSibling(): Section | null;
+
+        // Alias of nextSibling()
+        next(): Section | null;
+
+        lastSibling(): Section | null;
+
+        // Alias of lastSibling()
+        last(): Section | null;
+
+        // Alias of lastSibling()
+        previousSibling(): Section | null;
+
+        // Alias of lastSibling()
+        previous(): Section | null;
+
+        children(n: string | undefined | null): Section[];
+
+        children(n: number): Section;
+
+        // Alias of children
+        sections(n: string | undefined | null): Section[];
+
+        // Alias of children
+        sections(n: number): Section;
+
+        parent(): null | Section;
+
+        text(options: object | null | undefined): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
 
     }
 
     class Infobox {
 
+        private _type: string;
+
+        type(): string;
+
+        // Alias of type()
+        template(): string;
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object[]
+
+        image(): Image | null;
+
+        // Alias of image()
+        images(): Image | null;
+
+        get(key: string): object | null;
+
+        keyValue(): object;
+
+        // Alias of keyValue()
+        data(): object;
+
+        text(): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
+
     }
 
     class Table {
+
+        private data: object;
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object[]
+
+        keyValue(options: object): object;
+
+        // Alias of keyValue
+        keyvalue(options: object): object;
+
+        // Alais of keyValue
+        keyval(options: object): object;
+
+        text(): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
 
     }
 
     class Reference {
 
-    }
+        private data: object;
 
-    class Template {
+        title(): string;
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object[];
+
+        text(): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
 
     }
 
     class Paragraph {
+        private data: object;
+
+        sentences(num: number): Sentence;
+
+        sentences(): Sentence[];
+
+        references(num: number): Reference;
+
+        references(): Reference[];
+
+        // Alias of references
+        citations(num: number): Reference;
+
+        // Alias of references
+        citations(): Reference[];
+
+        lists(num: number): List;
+
+        lists(): List[];
+
+        images(num: number): Image;
+
+        images(): Image[];
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object;
+
+        interwiki(num: number): object;
+
+        interwiki(): object[];
+
+        text(options: object | null | undefined): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
 
     }
 
     class Image {
 
+        private data: object;
+
+        file(): string;
+
+        alt(): string;
+
+        caption(): string;
+
+        links(): object[]
+
+        url(): string;
+
+        // Alias of url()
+        src(): string;
+
+        thumbnail(size: number): string;
+
+        // Alias of thumbnail()
+        thumb(size: number): string;
+
+        format(): string;
+
+        exists(callback: () => boolean): Promise<boolean>;
+
+        text(): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
+
     }
 
     class List {
 
+        private data: object;
+
+        lines(): object;
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object;
+
+        interwiki(num: number): object;
+
+        interwiki(): object[];
+
+        text(options: object | null | undefined): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
+
     }
 
     class Sentence {
+
+        private data: object;
+
+        links(n: number): object;
+
+        links(n: string | undefined | null): object;
+
+        interwiki(num: number): object;
+
+        interwiki(): object[];
+
+        bolds(n: number): string;
+
+        bolds(): string[];
+
+        // Alias of bolds
+        bold(n: number): string;
+
+        // Alias of bolds
+        bold(): string[];
+
+        italics(n: number): string;
+
+        italics(): string[];
+
+        // Alias of italics
+        italic(n: number): string;
+
+        // Alias of italics
+        italic(): string[];
+
+        dates(n: number): string;
+
+        dates(): string[];
+
+        text(str: string | null | undefined): string;
+
+        // Alias of text
+        plaintext(str: string | null | undefined): string;
+
+        markdown(options: object | null | undefined): string;
+
+        latex(options: object | null | undefined): string;
+
+        html(options: object | null | undefined): string;
+
+        json(options: object | null | undefined): object;
 
     }
 }
